@@ -617,6 +617,9 @@ function renderStep(){
 function pickAndNext(btn,val){
   btn.closest('.choice-col,.choice-2col').querySelectorAll('.choice-card,.compact-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
+  // ステップごとの回答をformAnswersに保存
+  var stepKey = 'step' + cur;
+  formAnswers[stepKey] = val;
   setTimeout(()=>{if(cur<8){cur++;renderStep();}},130);
 }
 
@@ -887,9 +890,9 @@ function showDone(){
 
 /* ===== キントーン API 設定 ===== */
 // ★ 以下3つを実際の値に差し替えてください
-var KINTONE_SUBDOMAIN = 'YOUR_SUBDOMAIN';   // xxxxx.cybozu.com の xxxxx 部分
-var KINTONE_APP_ID    = 'YOUR_APP_ID';       // キントーンのアプリID（数字）
-var KINTONE_API_TOKEN = 'YOUR_API_TOKEN';    // APIトークン
+var KINTONE_SUBDOMAIN = 'ntp2ddr4zynw';
+var KINTONE_APP_ID    = '29';
+var KINTONE_API_TOKEN = 'V8CEXfmJ86nH1edwcb2ogeokQkzXp1VMIYWe5HPj';
 
 // キントーンへ送信する関数
 function sendToKintone(formData) {
