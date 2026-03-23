@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="賃貸併用住宅【IeーSma】イエスマ。あなたの家が、毎月お金を生む。初期費用0円で無料診断。">
+<title>賃貸併用住宅【IeーSma】無料シミュレーション</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#E8883A;
+  --orange-dark:#C96E22;
+  --orange-pale:#FEF3EA;
+  --charcoal:#222222;
+  --slate:#555555;
+  --muted:#888888;
+  --border:#DEDEDE;
+  --bg:#F5F5F5;
+  --white:#FFFFFF;
+  --cream:#FAFAFA;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--bg);
+  color:var(--charcoal);
+  line-height:1.7;
+  overflow-x:hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== HEADER ===== */
+.site-header{
+  background:var(--white);
+  border-bottom:3px solid var(--orange);
+  padding:0 16px;
+  display:flex;align-items:center;
+  height:50px;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+  flex-shrink:0;
+}
+.logo-en{color:var(--charcoal);font-size:17px;font-weight:700}
+.logo-en span{color:var(--orange)}
+.logo-ja{color:var(--muted);font-size:9px;letter-spacing:.1em;display:block;line-height:1.2}
+.logo-tag{background:var(--orange);color:var(--white);font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;margin-left:8px;vertical-align:middle}
+
+/* ===== CATCH BAND ===== */
+.catch-band{
+  background:var(--orange);
+  padding:16px 20px 20px;
+  text-align:center;
+  flex-shrink:0;
+  border-bottom:4px solid var(--orange-dark);
+}
+.catch-main{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(17px,4.5vw,24px);
+  font-weight:900;
+  color:var(--white);
+  line-height:1.3;
+}
+.catch-main em{
+  font-style:normal;
+  font-size:clamp(20px,5.5vw,30px);
+  display:block;
+}
+.catch-sub{
+  color:rgba(255,255,255,.82);
+  font-size:11px;
+  margin-top:6px;
+  letter-spacing:.04em;
+}
+.catch-badges{
+  display:flex;justify-content:center;gap:7px;
+  margin-top:10px;flex-wrap:wrap;
+}
+.catch-badge{
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.38);
+  color:var(--white);
+  font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:20px;
+  letter-spacing:.04em;
+}
+
+/* ===== FORM WRAP ===== */
+.form-wrap{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  max-width:520px;
+  width:100%;
+  margin:0 auto;
+  background:var(--white);
+}
+
+/* フォームヘッダー */
+.form-head{
+  background:var(--white);
+  padding:16px 20px 14px;
+  border-bottom:2px solid var(--border);
+}
+.form-head-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.form-step-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--orange);text-transform:uppercase}
+.form-step-count{font-size:10px;color:var(--muted)}
+.progress-wrap{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:12px}
+.progress-fill{height:4px;background:var(--orange);border-radius:2px;transition:width .4s ease}
+.form-question{font-size:16px;font-weight:700;color:var(--charcoal);line-height:1.5}
+.form-note{font-size:10px;color:var(--muted);margin-top:5px;display:flex;align-items:center;gap:4px}
+
+/* フォームボディ */
+.form-body{padding:20px 16px 28px;flex:1}
+
+/* 選択肢 */
+.choice-col{display:flex;flex-direction:column;gap:10px}
+.choice-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.choice-card{
+  display:flex;align-items:center;gap:14px;
+  border:1.5px solid var(--border);border-radius:6px;
+  padding:16px;background:var(--cream);
+  cursor:pointer;font-family:inherit;width:100%;text-align:left;
+  transition:border-color .15s,background .15s,transform .1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.choice-card:active{transform:scale(.98)}
+.choice-card:hover,.choice-card.selected{border-color:var(--orange);background:var(--orange-pale)}
+.pict{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.choice-label{font-size:15px;font-weight:700;color:var(--charcoal);display:block}
+.choice-sub{font-size:11px;color:var(--muted);margin-top:2px;display:block}
+
+.compact-btn{
+  border:1.5px solid var(--border);border-radius:6px;
+  padding:15px 10px;background:var(--cream);
+  cursor:pointer;font-size:13px;font-weight:700;color:var(--charcoal);
+  font-family:inherit;text-align:center;
+  transition:border-color .15s,background .15s,transform .1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.compact-btn:active{transform:scale(.97)}
+.compact-btn:hover,.compact-btn.selected{border-color:var(--orange);background:var(--orange-pale)}
+
+/* 戻る */
+.back-row{margin-top:14px}
+.btn-back{
+  background:none;border:1.5px solid var(--border);border-radius:5px;
+  padding:10px 18px;color:var(--muted);
+  font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:border-color .15s,color .15s;
+}
+.btn-back:hover{border-color:var(--slate);color:var(--slate)}
+
+/* フィールド */
+.fields-wrap{display:flex;flex-direction:column;gap:14px}
+.field-label{font-size:11px;font-weight:700;color:var(--charcoal);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.req{background:#555;color:var(--white);font-size:9px;padding:1px 6px;border-radius:2px}
+.input-field,.select-field{
+  width:100%;padding:13px 14px;
+  border:1.5px solid var(--border);border-radius:5px;
+  font-size:15px;font-family:inherit;
+  background:var(--cream);color:var(--charcoal);
+  outline:none;-webkit-appearance:none;appearance:none;
+  transition:border-color .15s;
+}
+.input-field:focus,.select-field:focus{border-color:var(--orange);background:var(--white)}
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none}
+.select-field{padding-right:36px}
+
+.privacy-txt{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;line-height:1.8}
+.privacy-txt a{color:var(--orange);border-bottom:1px solid rgba(232,136,58,.3)}
+.form-note-sub{font-size:11px;color:var(--slate);text-align:center;margin:10px 0 8px;line-height:1.7}
+
+.btn-next-manual{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--orange);border:none;border-radius:5px;
+  padding:16px;color:var(--white);font-size:15px;font-weight:700;
+  font-family:inherit;cursor:pointer;letter-spacing:.04em;
+  transition:background .15s;margin-top:14px;
+}
+.btn-next-manual:hover{background:var(--orange-dark)}
+
+.btn-submit{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--orange);border:none;border-radius:5px;
+  padding:18px 14px;color:var(--white);font-size:14px;font-weight:700;
+  font-family:inherit;cursor:pointer;letter-spacing:.02em;
+  transition:background .15s;margin-top:8px;line-height:1.4;text-align:center;
+}
+.btn-submit:hover{background:var(--orange-dark)}
+
+/* 完了 */
+.completion{text-align:center;padding:36px 16px}
+.completion-check{
+  width:68px;height:68px;
+  background:var(--orange-pale);border:2px solid var(--orange);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;
+}
+.completion h3{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:900;color:var(--charcoal);margin-bottom:12px}
+.completion-box{background:var(--orange-pale);border:1.5px solid var(--orange);border-radius:5px;padding:14px;margin:14px 0;font-size:13px;color:var(--charcoal);text-align:left}
+.completion p{font-size:13px;color:var(--slate);line-height:1.8}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#222;border-top:3px solid var(--orange);
+  padding:22px 20px;text-align:center;flex-shrink:0;
+}
+.footer-logo{font-size:16px;font-weight:700;color:var(--white);margin-bottom:3px}
+.footer-logo span{color:var(--orange)}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:10px 0}
+.footer-links a{color:rgba(255,255,255,.38);font-size:10px;border-bottom:1px solid rgba(255,255,255,.14);text-decoration:none}
+.footer-copy{color:rgba(255,255,255,.18);font-size:9px;letter-spacing:.08em}
+
+@media(min-width:520px){
+  .catch-band{padding:20px 40px 16px}
+}
+
+/* ===== 理由づけコピー ===== */
+.step-reason{
+  font-size:11px;color:var(--muted);
+  background:var(--bg);
+  border-left:3px solid var(--orange);
+  padding:7px 10px;border-radius:0 4px 4px 0;
+  margin-bottom:14px;line-height:1.6;
+}
+
+/* ===== 励ましマイクロコピー ===== */
+.cheer-bar{
+  display:flex;align-items:center;gap:8px;flex-wrap:nowrap;
+  background:var(--orange-pale);
+  border:1px solid rgba(232,136,58,.25);
+  border-radius:6px;
+  padding:10px 14px;
+  margin-bottom:14px;
+  font-size:12px;font-weight:700;color:var(--orange-dark);
+  animation:fadeSlide .35s ease;
+}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== 離脱防止ポップアップ ===== */
+.exit-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,.55);
+  display:flex;align-items:flex-end;
+  justify-content:center;
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.exit-sheet{
+  background:var(--white);
+  width:100%;max-width:520px;
+  border-radius:16px 16px 0 0;
+  padding:28px 24px 36px;
+  text-align:center;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.exit-sheet h3{
+  font-family:'Noto Serif JP',serif;
+  font-size:18px;font-weight:900;
+  color:var(--charcoal);margin-bottom:8px;
+}
+.exit-sheet p{font-size:13px;color:var(--slate);margin-bottom:20px;line-height:1.7}
+.exit-stay{
+  width:100%;background:var(--orange);border:none;border-radius:6px;
+  padding:16px;color:var(--white);font-size:15px;font-weight:700;
+  font-family:inherit;cursor:pointer;margin-bottom:10px;
+  transition:background .15s;
+}
+.exit-stay:hover{background:var(--orange-dark)}
+.exit-leave{
+  width:100%;background:none;border:1.5px solid var(--border);border-radius:6px;
+  padding:13px;color:var(--muted);font-size:13px;font-weight:700;
+  font-family:inherit;cursor:pointer;transition:border-color .15s;
+}
+.exit-leave:hover{border-color:var(--slate);color:var(--slate)}
+
+/* ===== バリデーションポップアップ ===== */
+.valid-overlay{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn .18s ease;
+}
+.valid-sheet{
+  background:var(--white);
+  width:100%;max-width:340px;
+  border-radius:12px;
+  overflow:hidden;
+  animation:popIn .22s ease;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.valid-sheet-head{
+  background:#E53E3E;
+  padding:16px 20px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.valid-sheet-head svg{flex-shrink:0}
+.valid-sheet-title{color:var(--white);font-size:14px;font-weight:700}
+.valid-sheet-body{padding:18px 20px 20px}
+.valid-sheet-msg{font-size:13px;color:var(--charcoal);line-height:1.7;margin-bottom:16px}
+.valid-sheet-msg strong{color:#E53E3E}
+.valid-sheet-ok{
+  width:100%;background:var(--orange);border:none;border-radius:5px;
+  padding:13px;color:var(--white);font-size:14px;font-weight:700;
+  font-family:inherit;cursor:pointer;transition:background .15s;
+}
+.valid-sheet-ok:hover{background:var(--orange-dark)}
+
+/* インラインエラー */
+.field-error{
+  font-size:12px;color:#E53E3E;margin-top:6px;
+  display:none;align-items:flex-start;gap:4px;
+  background:#FFF5F5;border:1px solid rgba(229,62,62,.3);
+  border-radius:4px;padding:8px 10px;line-height:1.5;
+}
+.field-error.visible{display:flex;}
+.input-field.error,.select-field.error{border-color:#E53E3E;background:#FFF5F5}
+</style>
+
+  <!-- ===== Google広告タグ（GTag） ===== -->
+  <!-- ★ G-XXXXXXXXXX を実際のGoogle広告IDに差し替えてください -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    // コンバージョンIDとラベルも差し替えてください
+    var GOOGLE_ADS_ID = 'AW-XXXXXXXXXX';
+    var GOOGLE_CV_LABEL = 'XXXXXXXXXXXX';
+  </script>
+
+  <!-- ===== Meta広告ピクセル ===== -->
+  <!-- ★ YOUR_PIXEL_ID を実際のMetaピクセルIDに差し替えてください -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    var META_PIXEL_ID = 'YOUR_PIXEL_ID';
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/>
+  </noscript>
+
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div>
+    <div class="logo-en">Ie-<span>Sma</span><span class="logo-tag">NEW</span></div>
+    <span class="logo-ja">賃貸併用住宅専門サービス</span>
+  </div>
+</header>
+
+<!-- CATCH -->
+<div class="catch-band">
+  <div class="catch-main">
+    あなたの家が、<em>毎月お金を生む。</em>
+  </div>
+  <p class="catch-sub">賃貸併用住宅で資産形成を始めよう</p>
+  <div class="catch-badges">
+    <span class="catch-badge">初期費用0円</span>
+    <span class="catch-badge">完全無料診断</span>
+    <span class="catch-badge">約30秒で完了</span>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <div class="form-head">
+    <div class="form-head-top">
+      <span class="form-step-label" id="stepLabel">STEP 1 / 8</span>
+      <span class="form-step-count" id="stepCount">残り7問</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progressFill" style="width:12.5%"></div>
+    </div>
+    <p class="form-question" id="formQuestion">現在のお住まいを教えてください</p>
+    <p class="form-note">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="1.5" y="4.5" width="7" height="5" rx=".8" stroke="#AAAAAA" stroke-width="1"/><path d="M3 4.5V3.2a2 2 0 014 0V4.5" stroke="#AAAAAA" stroke-width="1" stroke-linecap="round"/></svg>
+      公開されません・個人情報は厳重に管理されます
+    </p>
+  </div>
+  <div class="form-body" id="formBody"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ie-<span>Sma</span> イエスマ</div>
+  <div class="footer-links">
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">特定商取引法</a>
+    <a href="#">会社概要</a>
+    <a href="#">お問い合わせ</a>
+  </div>
+  <p class="footer-copy">© 2024 Ie-Sma All Rights Reserved.</p>
+</footer>
+
+<script>
+const STEPS=[
+  {id:1,q:'現在のお住まいを教えてください',type:'choice',
+   reason:'融資条件や最適なプランを選ぶために確認しています',
+   choices:[
+    {label:'持ち家',sub:'一戸建て・マンション',pict:`<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M5 21L22 6l17 15" stroke="#E8883A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 19v16a1 1 0 001 1h7.5v-8h11v8H35a1 1 0 001-1V19" stroke="#E8883A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="17" y="27" width="10" height="9" rx="1" stroke="#E8883A" stroke-width="1.4"/></svg>`},
+    {label:'賃貸',sub:'アパート・マンション',pict:`<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="7" y="9" width="30" height="29" rx="1.5" stroke="#E8883A" stroke-width="1.8"/><line x1="7" y1="20" x2="37" y2="20" stroke="#E8883A" stroke-width="1.2"/><line x1="22" y1="9" x2="22" y2="38" stroke="#E8883A" stroke-width="1.2"/><rect x="11" y="13" width="6" height="4.5" rx=".5" fill="#E8883A"/><rect x="27" y="13" width="6" height="4.5" rx=".5" fill="#E8883A"/><rect x="11" y="23" width="6" height="4.5" rx=".5" fill="#E8883A"/><rect x="27" y="23" width="6" height="4.5" rx=".5" fill="#E8883A"/><rect x="17" y="29" width="10" height="9" rx=".5" stroke="#E8883A" stroke-width="1.3"/></svg>`}
+  ]},
+  {id:2,q:'購入の時期はいつ頃を検討してますか？',type:'compact',reason:'スケジュールに合わせたプランをご提案するために確認しています',choices:['できるかぎり早く','6カ月以内','1年以内','2年以内','条件に合えば']},
+  {id:3,q:'ご年齢を教えてください',type:'compact',reason:'ローン返済期間や融資審査の目安を算出するために使用します',choices:['20代前半','20代後半','30代前半','30代後半','40代前半','40代後半','50代']},
+  {id:4,q:'現在のお仕事の働き方を教えてください',type:'compact',reason:'雇用形態により利用できる金融機関やローン商品が異なります',choices:['正社員','派遣','アルバイト','個人事業主','専業主婦','その他']},
+  {id:5,q:'現在の世帯年収を教えてください',type:'compact',reason:'いくら借りられるか・毎月の返済額の目安を算出するために使用します',choices:['100万円未満','100〜199万円','200〜299万円','300〜399万円','400〜499万円','500〜599万円','600〜699万円','700万円以上']},
+  {id:6,q:'他に借入がある方は借入額を教えてください',note:'カードローン・オートローン・教育ローンなど',type:'compact',reason:'正確な融資可能額を算出するために必要な情報です',choices:['なし（0円）','100万円未満','100〜199万円','200〜299万円','300〜399万円','400〜499万円','500万円以上']},
+  {id:7,q:'お住まいの地域を教えてください',type:'address',reason:'賃貸需要の高さや土地相場の参考にします'},
+  {id:8,q:'お名前・ご連絡先を教えてください',type:'contact',reason:'シミュレーション結果をご連絡するために必要です'}
+];
+const PREFS=['-- 選択してください --','北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+let cur=1;
+
+const CHEERS={
+  2:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><circle cx="7.5" cy="7.5" r="6.5" fill="#E8883A"/><path d="M4 7.5l2.5 2.5L11 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> ありがとうございます！あと6問です`,
+  3:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><path d="M2 8.5V13h2V8.5H2z" stroke="#E8883A" stroke-width="1.2" stroke-linecap="round"/><path d="M4 9.5l2-6a1 1 0 011-.5h.5a1 1 0 011 1V7h3a1 1 0 011 1l-.5 4a1 1 0 01-1 .9H4.5" stroke="#E8883A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> 順調です！半分まであと少し`,
+  4:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><path d="M7.5 12V3M4 6.5l3.5-3.5L11 6.5" stroke="#E8883A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> あと4問！このまま進みましょう`,
+  5:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><circle cx="7.5" cy="7.5" r="6.5" stroke="#E8883A" stroke-width="1.2"/><circle cx="7.5" cy="7.5" r="3.5" stroke="#E8883A" stroke-width="1.2"/><circle cx="7.5" cy="7.5" r="1.2" fill="#E8883A"/></svg> 折り返しです！あと3問`,
+  6:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><path d="M7.5 1.5l1.5 4h4l-3 2.5 1 4-3.5-2.5L4 12l1-4L2 5.5h4z" fill="#E8883A" stroke="#E8883A" stroke-width=".5" stroke-linejoin="round"/></svg> もう少し！あと2問です`,
+  7:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><path d="M2 7.5h9M8 4l4 3.5L8 11" stroke="#E8883A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> ラスト2問！もうすぐ完了`,
+  8:`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><circle cx="7.5" cy="7.5" r="6.5" fill="#E8883A"/><path d="M4 7.5l2.5 2.5L11 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 最後の入力です！あと少し`
+};
+
+/* ===== 郵便番号 → 住所自動入力 (zipcloud API) ===== */
+function autoZip(val) {
+  var zip = val.replace(/[^0-9]/g, '');
+  var status = document.getElementById('zipStatus');
+  if (!status) return;
+
+  if (zip.length < 7) {
+    if (zip.length > 0) {
+      status.textContent = 'あと' + (7 - zip.length) + '桁入力してください';
+      status.style.color = 'var(--muted)';
+    } else {
+      status.textContent = '';
+    }
+    return;
+  }
+
+  status.textContent = '検索中...';
+  status.style.color = 'var(--muted)';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + zip, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status !== 200) {
+      status.textContent = '通信エラーが発生しました。手動で入力してください。';
+      status.style.color = '#E53E3E';
+      return;
+    }
+    var data;
+    try { data = JSON.parse(xhr.responseText); } catch(e) {
+      status.textContent = '通信エラーが発生しました。手動で入力してください。';
+      status.style.color = '#E53E3E';
+      return;
+    }
+    if (data.status !== 200 || !data.results) {
+      status.textContent = '住所が見つかりませんでした。手動で入力してください。';
+      status.style.color = '#E53E3E';
+      return;
+    }
+    var res      = data.results[0];
+    var prefName = res.address1;
+    var city     = res.address2 + res.address3;
+
+    // 都道府県セット
+    var prefSel = document.getElementById('f_pref');
+    if (prefSel) {
+      for (var i = 0; i < prefSel.options.length; i++) {
+        if (prefSel.options[i].text === prefName) {
+          prefSel.selectedIndex = i;
+          break;
+        }
+      }
+      prefSel.classList.remove('error');
+    }
+
+    // 市区町村セット
+    var cityEl = document.getElementById('f_city');
+    if (cityEl) {
+      cityEl.value = city;
+      cityEl.classList.remove('error');
+    }
+
+// 成功メッセージ
+    status.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-right:3px"><circle cx="6" cy="6" r="5.5" fill="#2D8C5E"/><path d="M3 6l2 2 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>住所を自動入力しました';
+    status.style.color = '#2D8C5E';
+  };
+  xhr.onerror = function() {
+    status.textContent = '通信エラーが発生しました。手動で入力してください。';
+    status.style.color = '#E53E3E';
+  };
+  xhr.send();
+}
+
+function updateHead(){
+  document.getElementById('stepLabel').textContent=`STEP ${cur} / 8`;
+  document.getElementById('stepCount').textContent=cur<8?`残り${8-cur}問`:'最後の質問';
+  document.getElementById('formQuestion').textContent=STEPS[cur-1].q;
+  document.getElementById('progressFill').style.width=(cur/8*100)+'%';
+}
+
+function backRow(){
+  return cur>1?`<div class="back-row"><button class="btn-back" onclick="goBack()">← 戻る</button></div>`:'';
+}
+
+function renderStep(){
+  updateHead();
+  const s=STEPS[cur-1];
+  const b=document.getElementById('formBody');
+  const reasonHtml=s.reason?`<div class="step-reason"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0"><circle cx="6.5" cy="6.5" r="5.5" stroke="#C96E22" stroke-width="1.1"/><rect x="6" y="5.5" width="1" height="4" rx=".5" fill="#C96E22"/><circle cx="6.5" cy="3.8" r=".7" fill="#C96E22"/></svg> ${s.reason}</div>`:'';
+  const cheerHtml=CHEERS[cur]?`<div class="cheer-bar">${CHEERS[cur]}</div>`:'';
+
+  if(s.type==='choice'){
+    b.innerHTML=`
+      ${reasonHtml}
+      <div class="choice-col">
+        ${s.choices.map(c=>`
+          <button class="choice-card" onclick="pickAndNext(this,'${c.label}')">
+            <span class="pict">${c.pict}</span>
+            <span>
+              <span class="choice-label">${c.label}</span>
+              ${c.sub?`<span class="choice-sub">${c.sub}</span>`:''}
+            </span>
+          </button>`).join('')}
+      </div>
+      ${backRow()}
+      <p class="privacy-txt"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0;vertical-align:middle"><rect x="1.5" y="5" width="8" height="5.5" rx="1" stroke="#AAAAAA" stroke-width="1"/><path d="M3 5V3.5a2.5 2.5 0 015 0V5" stroke="#AAAAAA" stroke-width="1" stroke-linecap="round"/></svg> 入力情報は厳重に管理されます</p>`;
+
+  } else if(s.type==='compact'){
+    const cols=s.choices.length>=4;
+    b.innerHTML=`
+      ${cheerHtml}
+      ${reasonHtml}
+      <div class="${cols?'choice-2col':'choice-col'}">
+        ${s.choices.map(c=>`<button class="compact-btn" onclick="pickAndNext(this,'${c}')">${c}</button>`).join('')}
+      </div>
+      ${backRow()}
+      <p class="privacy-txt"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0;vertical-align:middle"><rect x="1.5" y="5" width="8" height="5.5" rx="1" stroke="#AAAAAA" stroke-width="1"/><path d="M3 5V3.5a2.5 2.5 0 015 0V5" stroke="#AAAAAA" stroke-width="1" stroke-linecap="round"/></svg> 入力情報は厳重に管理されます</p>`;
+
+  } else if(s.type==='address'){
+    b.innerHTML=`
+      ${cheerHtml}
+      ${reasonHtml}
+      <div class="fields-wrap">
+        <div>
+          <div class="field-label">郵便番号</div>
+          <input id="f_zip" type="tel" class="input-field" placeholder="例：1000001（ハイフンなし）" maxlength="7" oninput="autoZip(this.value)" autocomplete="postal-code"><span id="zipStatus" style="font-size:11px;color:var(--muted);margin-top:4px;display:block;min-height:16px"></span>
+        </div>
+        <div>
+          <div class="field-label">都道府県 <span class="req">必須</span></div>
+          <div class="sel-wrap"><select id="f_pref" class="select-field" autocomplete="address-level1">${PREFS.map(p=>`<option>${p}</option>`).join('')}</select></div>
+        </div>
+        <div>
+          <div class="field-label">市区町村 <span class="req">必須</span></div>
+          <input id="f_city" type="text" class="input-field" placeholder="例：千代田区" autocomplete="address-level2">
+        </div>
+      </div>
+      <button class="btn-next-manual" onclick="goNextAddr()">次へ進む →</button>
+      ${backRow()}
+      <p class="privacy-txt"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0;vertical-align:middle"><rect x="1.5" y="5" width="8" height="5.5" rx="1" stroke="#AAAAAA" stroke-width="1"/><path d="M3 5V3.5a2.5 2.5 0 015 0V5" stroke="#AAAAAA" stroke-width="1" stroke-linecap="round"/></svg> 入力情報は厳重に管理されます</p>`;
+
+  } else if(s.type==='contact'){
+    b.innerHTML=`
+      ${cheerHtml}
+      ${reasonHtml}
+      <div class="fields-wrap">
+        <div>
+          <div class="field-label">お名前 <span class="req">必須</span></div>
+          <input id="f_name" type="text" class="input-field" placeholder="例：山田 太郎" oninput="checkNameNG(this)">
+          <div id="nameNgHint" class="field-error"></div>
+        </div>
+        <div>
+          <div class="field-label">電話番号 <span class="req">必須</span></div>
+          <input id="f_tel" type="tel" class="input-field" placeholder="例：09012345678（ハイフンなし）">
+        </div>
+        <div>
+          <div class="field-label">メールアドレス <span class="req">必須</span></div>
+          <input id="f_email" type="email" class="input-field" placeholder="例：taro@example.com">
+        </div>
+      </div>
+      <p class="form-note-sub">すべて入力後、いくら借りられるか、<br>適切な予算についての情報をお届けします！</p>
+      <button class="btn-submit" onclick="submitForm()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3.5l5 4.5-5 4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        今の年収で家が建てられるかシミュレーション！
+      </button>
+      ${backRow()}
+      <p class="privacy-txt"><a href="#">プライバシーポリシー</a>に同意の上ご送信ください<br><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0;vertical-align:middle"><rect x="1.5" y="5" width="8" height="5.5" rx="1" stroke="#AAAAAA" stroke-width="1"/><path d="M3 5V3.5a2.5 2.5 0 015 0V5" stroke="#AAAAAA" stroke-width="1" stroke-linecap="round"/></svg> 入力情報は厳重に管理されます</p>`;
+  }
+}
+
+function pickAndNext(btn,val){
+  btn.closest('.choice-col,.choice-2col').querySelectorAll('.choice-card,.compact-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(()=>{if(cur<8){cur++;renderStep();}},130);
+}
+
+function goNextAddr(){
+  const p=document.getElementById('f_pref').value;
+  const c=document.getElementById('f_city').value.trim();
+  if(p==='-- 選択してください --'||!c){alert('都道府県と市区町村を入力してください');return;}
+  formAnswers.pref = p;
+  formAnswers.city = c;
+  cur++;renderStep();
+}
+
+/* ===== 入力バリデーション ===== */
+
+// NGワード（下ネタ・不適切語）
+const NG_WORDS = [
+  'うんこ','うんち','ちんちん','まんこ','ちんぽ','ちんこ','おっぱい','セックス','sex',
+  'ファック','fuck','shit','bitch','くそ','くそ野郎','死ね','ばか','アホ','カス',
+  'きもい','うせろ','ふざけんな','ていのう','おまえ','てめえ'
+];
+
+function getMatchedNG(text) {
+  var t = text.toLowerCase().replace(/[\s　]/g, '');
+  for (var i = 0; i < NG_WORDS.length; i++) {
+    if (t.indexOf(NG_WORDS[i].toLowerCase()) !== -1) return NG_WORDS[i];
+  }
+  return null;
+}
+
+function checkNameNG(el) {
+  var val = el.value;
+  var hint = document.getElementById('nameNgHint');
+  var submitBtn = document.querySelector('.btn-submit');
+  var matched = getMatchedNG(val);
+
+  if (matched) {
+    el.classList.add('error');
+    if (hint) {
+      hint.innerHTML =
+        '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;margin-top:1px">'
+        + '<circle cx="6.5" cy="6.5" r="6" fill="#E53E3E"/>'
+        + '<rect x="6" y="3" width="1" height="4" rx=".5" fill="white"/>'
+        + '<circle cx="6.5" cy="9.5" r=".8" fill="white"/>'
+        + '</svg>'
+        + '<span><span style="font-weight:700">&ldquo;' + matched + '&rdquo;</span> は使用できません。<br>正しいお名前を入力してください。</span>';
+      hint.classList.add('visible');
+    }
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.4';
+      submitBtn.style.cursor = 'not-allowed';
+    }
+  } else {
+    el.classList.remove('error');
+    if (hint) {
+      hint.innerHTML = '';
+      hint.classList.remove('visible');
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
+      submitBtn.style.cursor = 'pointer';
+    }
+  }
+}
+
+
+function containsNG(text) {
+  const t = text.toLowerCase().replace(/\s/g,'');
+  return NG_WORDS.some(w => t.includes(w.toLowerCase()));
+}
+
+// ===== 電話番号バリデーション =====
+// 仕様:
+//   許可: 050/070/080/090 から始まる11桁のみ
+//   下8桁エラー:
+//     1. 同じ数字の繰り返し (例: 88888888)
+//     2. 数字と0の交互パターン (例: 90909090)
+//     3. 連続する数字・循環連続含む (例: 12345678, 45678901)
+//     4. 4桁以上同じ数字が連続 (例: 11112222, 11122222)
+
+function validateTel(tel) {
+  var t = tel.replace(/[-\s]/g, '');
+
+  // 1. 11桁の数字のみ
+  if (!/^\d{11}$/.test(t)) {
+    return {ok:false, msg:'電話番号は<strong>11桁の数字</strong>で入力してください。<br>例：09056781234'};
+  }
+
+  // 2. 050/070/080/090 から始まること
+  if (!/^(050|070|080|090)/.test(t)) {
+    return {ok:false, msg:'電話番号は<strong>050・070・080・090</strong>から始まる番号を入力してください。'};
+  }
+
+  // 下8桁を取得
+  var d = t.slice(3);
+
+  // 3. 同じ数字の繰り返し（例：88888888）
+  if (/^(\d)\1{7}$/.test(d)) {
+    return {ok:false, msg:'正しい電話番号を入力してください。<br>（同じ数字の繰り返しは無効です）'};
+  }
+
+  // 4. 数字と0の交互パターン（例：90909090, 60606060）
+  if (/^(\d0){4}$/.test(d) || /^(0\d){4}$/.test(d)) {
+    return {ok:false, msg:'正しい電話番号を入力してください。<br>（交互パターンは無効です）'};
+  }
+
+  // 5. 連続する数字・循環連続含む（例：12345678, 87654321, 45678901）
+  var seq  = '01234567890123456789';
+  var seqR = '98765432109876543210';
+  if (seq.indexOf(d) !== -1 || seqR.indexOf(d) !== -1) {
+    return {ok:false, msg:'正しい電話番号を入力してください。<br>（連続する数字は無効です）'};
+  }
+
+  // 6. 4桁以上同じ数字が連続（例：11112222, 11122222, 22221111）
+  if (/(\d)\1{3}/.test(d)) {
+    return {ok:false, msg:'正しい電話番号を入力してください。<br>（数字の繰り返しパターンは無効です）'};
+  }
+
+  return {ok:true};
+}
+
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if(!re.test(email)) {
+    return {ok:false, msg:'メールアドレスの形式が正しくありません。<br>例：<strong>taro@example.com</strong>'};
+  }
+  return {ok:true};
+}
+
+// 名前バリデーション（NGワード）
+function validateName(name) {
+  if(!name.trim()) {
+    return {ok:false, msg:'お名前を入力してください。'};
+  }
+  if(containsNG(name)) {
+    return {ok:false, msg:'お名前に<strong>不適切な表現</strong>が含まれています。<br>正式なお名前を入力してください。'};
+  }
+  if(name.trim().length < 2) {
+    return {ok:false, msg:'お名前は<strong>2文字以上</strong>で入力してください。'};
+  }
+  return {ok:true};
+}
+
+function showValidPopup(title, msg) {
+  document.getElementById('validTitle').textContent = title;
+  document.getElementById('validMsg').innerHTML = msg;
+  document.getElementById('validOverlay').style.display = 'flex';
+}
+
+function closeValidPopup(e) {
+  if(e.target === document.getElementById('validOverlay')) {
+    document.getElementById('validOverlay').style.display = 'none';
+  }
+}
+
+// submitFormを上書き
+function submitForm() {
+  const nameEl  = document.getElementById('f_name');
+  const telEl   = document.getElementById('f_tel');
+  const emailEl = document.getElementById('f_email');
+
+  // リセット
+  [nameEl, telEl, emailEl].forEach(el => el && el.classList.remove('error'));
+
+  const name  = nameEl  ? nameEl.value.trim()  : '';
+  const tel   = telEl   ? telEl.value.trim()   : '';
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if(!name || !tel || !email) {
+    showValidPopup('未入力の項目があります', '全ての項目を入力してください。');
+    return;
+  }
+
+  // 名前チェック（NGワード含む）
+  if(containsNG(name)) {
+    nameEl.classList.add('error');
+    nameEl.focus();
+    var hint = document.getElementById('nameNgHint');
+    if(hint) hint.classList.add('visible');
+    showValidPopup('お名前を確認してください', '不適切な表現が含まれています。<br>正式なお名前を入力してください。');
+    return;
+  }
+  const nameRes = validateName(name);
+  if(!nameRes.ok) {
+    nameEl.classList.add('error');
+    nameEl.focus();
+    showValidPopup('お名前を確認してください', nameRes.msg);
+    return;
+  }
+
+  // 電話番号チェック
+  const telRes = validateTel(tel);
+  if(!telRes.ok) {
+    telEl.classList.add('error');
+    telEl.focus();
+    showValidPopup('電話番号を確認してください', telRes.msg);
+    return;
+  }
+
+  // メールチェック
+  const emailRes = validateEmail(email);
+  if(!emailRes.ok) {
+    emailEl.classList.add('error');
+    emailEl.focus();
+    showValidPopup('メールアドレスを確認してください', emailRes.msg);
+    return;
+  }
+
+  // フォームデータを収集
+  formAnswers.name  = name;
+  formAnswers.tel   = tel;
+  formAnswers.email = email;
+
+  // キントーンへ送信
+  sendToKintone(formAnswers)
+    .then(function() {
+      console.log('kintone送信成功');
+    })
+    .catch(function(e) {
+      console.warn('kintone送信エラー:', e.message);
+      // 送信失敗でも完了画面は表示する
+    });
+
+  // Google広告コンバージョン計測
+  if(typeof gtag !== 'undefined') {
+    gtag('event', 'conversion', {
+      'send_to': GOOGLE_ADS_ID + '/' + GOOGLE_CV_LABEL
+    });
+  }
+
+  // Meta広告コンバージョン計測
+  if(typeof fbq !== 'undefined') {
+    fbq('track', 'Lead', {
+      content_name: '賃貸併用住宅診断',
+      content_category: 'IeSma'
+    });
+  }
+
+  // 完了画面へ
+  showDone();
+}
+
+function goBack(){if(cur>1){cur--;renderStep();}}
+
+// submitForm is defined above with validation
+
+function showDone(){
+  document.getElementById('formQuestion').textContent='ありがとうございます！';
+  document.getElementById('stepLabel').textContent='診断完了';
+  document.getElementById('stepCount').textContent='';
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('formBody').innerHTML=`
+    <div class="completion">
+      <div class="completion-check">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M5 15l7 7L25 8" stroke="#E8883A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>診断を受け付けました！</h3>
+      <div class="completion-box">
+        <strong style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;vertical-align:middle;margin-right:4px"><path d="M2 2.5A.5.5 0 012.5 2h2a.5.5 0 01.5.4l.6 2.5a.5.5 0 01-.1.4L4.3 6.6a8 8 0 003.1 3.1l1.3-1.2a.5.5 0 01.4-.1l2.5.6a.5.5 0 01.4.5v2a.5.5 0 01-.5.5A9.5 9.5 0 012 2.5z" stroke="#E8883A" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg> 担当スタッフよりご連絡します</strong><br>
+        <span style="font-size:12px;color:#555">通常2〜3営業日以内にご連絡いたします。</span>
+      </div>
+      <p>ご入力内容をもとに、最適な賃貸併用住宅プランをご提案いたします。</p>
+    </div>`;
+}
+
+
+/* ===== キントーン API 設定 ===== */
+// ★ 以下3つを実際の値に差し替えてください
+var KINTONE_SUBDOMAIN = 'YOUR_SUBDOMAIN';   // xxxxx.cybozu.com の xxxxx 部分
+var KINTONE_APP_ID    = 'YOUR_APP_ID';       // キントーンのアプリID（数字）
+var KINTONE_API_TOKEN = 'YOUR_API_TOKEN';    // APIトークン
+
+// キントーンへ送信する関数
+function sendToKintone(formData) {
+  var url = 'https://' + KINTONE_SUBDOMAIN + '.cybozu.com/k/v1/record.json';
+  var record = {
+    '住まい':      { value: formData.step1  || '' },
+    '購入時期':    { value: formData.step2  || '' },
+    '年齢':        { value: formData.step3  || '' },
+    '働き方':      { value: formData.step4  || '' },
+    '世帯年収':    { value: formData.step5  || '' },
+    '借入額':      { value: formData.step6  || '' },
+    '都道府県':    { value: formData.pref   || '' },
+    '市区町村':    { value: formData.city   || '' },
+    '氏名':        { value: formData.name   || '' },
+    '電話番号':    { value: formData.tel    || '' },
+    'メール':      { value: formData.email  || '' }
+  };
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-Cybozu-API-Token': KINTONE_API_TOKEN,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ app: KINTONE_APP_ID, record: record })
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('kintone error: ' + r.status);
+    return r.json();
+  });
+}
+
+// 回答を蓄積するオブジェクト
+var formAnswers = {};
+
+renderStep();
+
+</script>
+
+<!-- 離脱防止ポップアップ -->
+<div class="exit-overlay" id="exitOverlay" style="display:none">
+  <div class="exit-sheet">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block"><path d="M6 22L24 6l18 16" stroke="#E8883A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20v18a1 1 0 001 1h9v-9h10v9h9a1 1 0 001-1V20" stroke="#E8883A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="19" y="29" width="10" height="10" rx="1" stroke="#E8883A" stroke-width="1.6"/></svg>
+    <h3>もう少しで完了です！</h3>
+    <p>無料診断はあと<strong style="color:var(--orange)">30秒</strong>で完了します。<br>入力内容は保存されています。</p>
+    <button class="exit-stay" onclick="closeExitPopup()">診断を続ける →</button>
+    <button class="exit-leave" onclick="confirmLeave()">閉じる</button>
+  </div>
+</div>
+
+<!-- バリデーションポップアップ -->
+<div class="valid-overlay" id="validOverlay" style="display:none" onclick="closeValidPopup(event)">
+  <div class="valid-sheet">
+    <div class="valid-sheet-head">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="white" stroke-width="1.5"/>
+        <path d="M10 6v5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="10" cy="14" r="1" fill="white"/>
+      </svg>
+      <span class="valid-sheet-title" id="validTitle">入力内容を確認してください</span>
+    </div>
+    <div class="valid-sheet-body">
+      <p class="valid-sheet-msg" id="validMsg"></p>
+      <button class="valid-sheet-ok" onclick="document.getElementById('validOverlay').style.display='none'">
+        修正する
+      </button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
