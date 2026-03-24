@@ -894,34 +894,28 @@ var KINTONE_SUBDOMAIN = 'ntp2ddr4zynw';
 var KINTONE_APP_ID    = '29';
 var KINTONE_API_TOKEN = 'V8CEXfmJ86nH1edwcb2ogeokQkzXp1VMIYWe5HPj';
 
-// キントーンへ送信する関数
+// GAS経由でキントーンへ送信する関数（CORS回避）
+var GAS_URL = 'https://script.google.com/a/macros/iegao.co.jp/s/AKfycbwHZOfp8Whe5aYblm9UgXFQZmLx6ODBHp0tZoYfRskuglF_T6PLPF3nd4c664Vtuvmt/exec';
+
 function sendToKintone(formData) {
-  var url = 'https://' + KINTONE_SUBDOMAIN + '.cybozu.com/k/v1/record.json';
-  var record = {
-    '住まい':      { value: formData.step1  || '' },
-    '購入時期':    { value: formData.step2  || '' },
-    '年齢':        { value: formData.step3  || '' },
-    '働き方':      { value: formData.step4  || '' },
-    '世帯年収':    { value: formData.step5  || '' },
-    '借入額':      { value: formData.step6  || '' },
-    '都道府県':    { value: formData.pref   || '' },
-    '市区町村':    { value: formData.city   || '' },
-    '氏名':        { value: formData.name   || '' },
-    '電話番号':    { value: formData.tel    || '' },
-    'メール':      { value: formData.email  || '' }
-  };
-  return fetch(url, {
+  return fetch(GAS_URL, {
     method: 'POST',
-    headers: {
-      'X-Cybozu-API-Token': KINTONE_API_TOKEN,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ app: KINTONE_APP_ID, record: record })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      step1:  formData.step1  || '',
+      step2:  formData.step2  || '',
+      step3:  formData.step3  || '',
+      step4:  formData.step4  || '',
+      step5:  formData.step5  || '',
+      step6:  formData.step6  || '',
+      pref:   formData.pref   || '',
+      city:   formData.city   || '',
+      name:   formData.name   || '',
+      tel:    formData.tel    || '',
+      email:  formData.email  || ''
+    })
   })
-  .then(function(r) {
-    if (!r.ok) throw new Error('kintone error: ' + r.status);
-    return r.json();
-  });
+  .then(function(r) { return r.json(); });
 }
 
 // 回答を蓄積するオブジェクト
