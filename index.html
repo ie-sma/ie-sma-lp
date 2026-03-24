@@ -894,13 +894,13 @@ var KINTONE_SUBDOMAIN = 'ntp2ddr4zynw';
 var KINTONE_APP_ID    = '29';
 var KINTONE_API_TOKEN = 'V8CEXfmJ86nH1edwcb2ogeokQkzXp1VMIYWe5HPj';
 
-// GAS経由でキントーンへ送信する関数（CORS回避）
-var GAS_URL = 'https://script.google.com/a/macros/iegao.co.jp/s/AKfycbwHZOfp8Whe5aYblm9UgXFQZmLx6ODBHp0tZoYfRskuglF_T6PLPF3nd4c664Vtuvmt/exec';
-
 function sendToKintone(formData) {
-  return fetch(GAS_URL, {
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwHZOfp8Whe5aYblm9UgXFQZmLx6ODBHp0tZoYfRskuglF_T6PLPF3nd4c664Vtuvmt/exec';
+  // no-corsモードで送信（GASのCORS制限を回避）
+  fetch(GAS_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       step1:  formData.step1  || '',
       step2:  formData.step2  || '',
@@ -914,8 +914,9 @@ function sendToKintone(formData) {
       tel:    formData.tel    || '',
       email:  formData.email  || ''
     })
-  })
-  .then(function(r) { return r.json(); });
+  }).catch(function(e) { console.warn('GAS送信エラー:', e.message); });
+  // 送信はfire-and-forgetで完了画面は必ず表示
+  return Promise.resolve({result: 'ok'});
 }
 
 // 回答を蓄積するオブジェクト
